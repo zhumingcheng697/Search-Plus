@@ -13,10 +13,17 @@
 		C2405B8E2559C66400223C73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2405B8D2559C66400223C73 /* Assets.xcassets */; };
 		C2405B912559C66400223C73 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2405B902559C66400223C73 /* Preview Assets.xcassets */; };
 		C2405B942559C66400223C73 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2405B922559C66400223C73 /* LaunchScreen.storyboard */; };
+		C2405B9D2559C68300223C73 /* Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2405B9C2559C68300223C73 /* Identity.swift */; };
+		C28F30A12566F71200228CC1 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F30A02566F71200228CC1 /* CustomSearchBar.swift */; };
+		C28F30A82567BB1D00228CC1 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F30A72567BB1D00228CC1 /* Command.swift */; };
+		C28F30AD2568829900228CC1 /* CommandDestinationViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F30AC2568829900228CC1 /* CommandDestinationViewWrapper.swift */; };
+		C28F30B125688BDB00228CC1 /* CommandViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F30B025688BDB00228CC1 /* CommandViews.swift */; };
+		C28F30B62568A04300228CC1 /* env.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F30B52568A04300228CC1 /* env.swift */; };
+		C28F30B92569BF8F00228CC1 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F30B82569BF8E00228CC1 /* Enums.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C2405B842559C66300223C73 /* Search Plus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Search Plus.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2405B842559C66300223C73 /* SearchPlus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SearchPlus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2405B872559C66300223C73 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C2405B892559C66300223C73 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C2405B8B2559C66300223C73 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -24,6 +31,13 @@
 		C2405B902559C66400223C73 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C2405B932559C66400223C73 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C2405B952559C66400223C73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C2405B9C2559C68300223C73 /* Identity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identity.swift; sourceTree = "<group>"; };
+		C28F30A02566F71200228CC1 /* CustomSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
+		C28F30A72567BB1D00228CC1 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
+		C28F30AC2568829900228CC1 /* CommandDestinationViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandDestinationViewWrapper.swift; sourceTree = "<group>"; };
+		C28F30B025688BDB00228CC1 /* CommandViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandViews.swift; sourceTree = "<group>"; };
+		C28F30B52568A04300228CC1 /* env.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = env.swift; sourceTree = "<group>"; };
+		C28F30B82569BF8E00228CC1 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,7 +54,7 @@
 		C2405B7B2559C66300223C73 = {
 			isa = PBXGroup;
 			children = (
-				C2405B862559C66300223C73 /* Search Plus */,
+				C2405B862559C66300223C73 /* SearchPlus */,
 				C2405B852559C66300223C73 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,23 +62,30 @@
 		C2405B852559C66300223C73 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C2405B842559C66300223C73 /* Search Plus.app */,
+				C2405B842559C66300223C73 /* SearchPlus.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C2405B862559C66300223C73 /* Search Plus */ = {
+		C2405B862559C66300223C73 /* SearchPlus */ = {
 			isa = PBXGroup;
 			children = (
 				C2405B872559C66300223C73 /* AppDelegate.swift */,
 				C2405B892559C66300223C73 /* SceneDelegate.swift */,
 				C2405B8B2559C66300223C73 /* ContentView.swift */,
+				C2405B9C2559C68300223C73 /* Identity.swift */,
+				C28F30A02566F71200228CC1 /* CustomSearchBar.swift */,
+				C28F30A72567BB1D00228CC1 /* Command.swift */,
+				C28F30B025688BDB00228CC1 /* CommandViews.swift */,
+				C28F30AC2568829900228CC1 /* CommandDestinationViewWrapper.swift */,
+				C28F30B82569BF8E00228CC1 /* Enums.swift */,
+				C28F30B52568A04300228CC1 /* env.swift */,
 				C2405B8D2559C66400223C73 /* Assets.xcassets */,
 				C2405B922559C66400223C73 /* LaunchScreen.storyboard */,
 				C2405B952559C66400223C73 /* Info.plist */,
 				C2405B8F2559C66400223C73 /* Preview Content */,
 			);
-			path = "Search Plus";
+			path = SearchPlus;
 			sourceTree = "<group>";
 		};
 		C2405B8F2559C66400223C73 /* Preview Content */ = {
@@ -78,9 +99,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C2405B832559C66300223C73 /* Search Plus */ = {
+		C2405B832559C66300223C73 /* SearchPlus */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C2405B982559C66400223C73 /* Build configuration list for PBXNativeTarget "Search Plus" */;
+			buildConfigurationList = C2405B982559C66400223C73 /* Build configuration list for PBXNativeTarget "SearchPlus" */;
 			buildPhases = (
 				C2405B802559C66300223C73 /* Sources */,
 				C2405B812559C66300223C73 /* Frameworks */,
@@ -90,9 +111,9 @@
 			);
 			dependencies = (
 			);
-			name = "Search Plus";
+			name = SearchPlus;
 			productName = "Search Plus";
-			productReference = C2405B842559C66300223C73 /* Search Plus.app */;
+			productReference = C2405B842559C66300223C73 /* SearchPlus.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -109,7 +130,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C2405B7F2559C66300223C73 /* Build configuration list for PBXProject "Search Plus" */;
+			buildConfigurationList = C2405B7F2559C66300223C73 /* Build configuration list for PBXProject "SearchPlus" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -122,7 +143,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C2405B832559C66300223C73 /* Search Plus */,
+				C2405B832559C66300223C73 /* SearchPlus */,
 			);
 		};
 /* End PBXProject section */
@@ -145,9 +166,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C28F30B125688BDB00228CC1 /* CommandViews.swift in Sources */,
 				C2405B882559C66300223C73 /* AppDelegate.swift in Sources */,
+				C28F30B92569BF8F00228CC1 /* Enums.swift in Sources */,
+				C28F30A82567BB1D00228CC1 /* Command.swift in Sources */,
+				C28F30B62568A04300228CC1 /* env.swift in Sources */,
+				C28F30A12566F71200228CC1 /* CustomSearchBar.swift in Sources */,
 				C2405B8A2559C66300223C73 /* SceneDelegate.swift in Sources */,
+				C28F30AD2568829900228CC1 /* CommandDestinationViewWrapper.swift in Sources */,
 				C2405B8C2559C66300223C73 /* ContentView.swift in Sources */,
+				C2405B9D2559C68300223C73 /* Identity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,15 +315,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Search Plus/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"SearchPlus/Preview Content\"";
 				DEVELOPMENT_TEAM = MGM7CAKZL4;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "Search Plus/Info.plist";
+				INFOPLIST_FILE = SearchPlus/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "mccoyzhu.Search-Plus";
+				PRODUCT_BUNDLE_IDENTIFIER = mccoyzhu.SearchPlus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -308,15 +336,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Search Plus/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"SearchPlus/Preview Content\"";
 				DEVELOPMENT_TEAM = MGM7CAKZL4;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "Search Plus/Info.plist";
+				INFOPLIST_FILE = SearchPlus/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "mccoyzhu.Search-Plus";
+				PRODUCT_BUNDLE_IDENTIFIER = mccoyzhu.SearchPlus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -326,7 +354,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C2405B7F2559C66300223C73 /* Build configuration list for PBXProject "Search Plus" */ = {
+		C2405B7F2559C66300223C73 /* Build configuration list for PBXProject "SearchPlus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C2405B962559C66400223C73 /* Debug */,
@@ -335,7 +363,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C2405B982559C66400223C73 /* Build configuration list for PBXNativeTarget "Search Plus" */ = {
+		C2405B982559C66400223C73 /* Build configuration list for PBXNativeTarget "SearchPlus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C2405B992559C66400223C73 /* Debug */,
