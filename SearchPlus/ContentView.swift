@@ -18,7 +18,7 @@ struct ContentView: View {
     }
     
     var body: some View {
-        if UIDevice.current.userInterfaceIdiom != .phone || max(UIScreen.main.bounds.height, UIScreen.main.bounds.width) != 812 {
+        if UIDevice.current.userInterfaceIdiom != .phone || UIScreen.main.bounds.height != 812 {
             HomeView().environmentObject(self.env)
         } else {
             Image("ins")

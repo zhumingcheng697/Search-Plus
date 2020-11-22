@@ -27,7 +27,7 @@ struct SuggestedCommandLink: View {
                     
                     if !self.command.pathName().isEmpty {
                         Text(self.command.pathName(level: 2))
-                            .lineLimit(1)
+                            .multilineTextAlignment(.center)
                             .font(.footnote)
                             .foregroundColor(Color(UIColor.systemGray))
                     }
@@ -63,7 +63,6 @@ struct MatchedCommandLink: View {
                         
                         if !self.command.pathName().isEmpty {
                             Text(self.command.pathName())
-                                .lineLimit(1)
                                 .font(.footnote)
                                 .foregroundColor(Color(UIColor.systemGray))
                         }
