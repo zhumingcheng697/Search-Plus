@@ -7,8 +7,8 @@
 
 enum PrivacyOptions: String, CaseIterable {
     case everyOne = "Everyone"
-    case followingAndFollower = "People You Follow and Your Followers"
-    case followingOnly = "People You Follow Only"
-    case followerOnly = "Your Followers Only"
+    case followingAndFollower = "People I Follow and My Followers"
+    case followingOnly = "People I Follow Only"
+    case followerOnly = "My Followers Only"
     case noOne = "No One"
 }

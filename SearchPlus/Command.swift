@@ -120,9 +120,9 @@ let commands = [
                 [
                     composeView(env: env, content: { env in
                         Group {
-                            Toggle("Likes from People You Follow", isOn: .init(get: { env.likeNotification.following }, set: { env.likeNotification.following = $0 }))
+                            Toggle("Likes from People I Follow", isOn: .init(get: { env.likeNotification.following }, set: { env.likeNotification.following = $0 }))
                             
-                            Toggle("Likes from Your Followers", isOn: .init(get: { env.likeNotification.follower }, set: { env.likeNotification.follower = $0 }))
+                            Toggle("Likes from My Followers", isOn: .init(get: { env.likeNotification.follower }, set: { env.likeNotification.follower = $0 }))
                             
                             Toggle("Likes from Others", isOn: .init(get: { env.likeNotification.others }, set: { env.likeNotification.others = $0 }))
                         }.navigationBarTitle("Notifications")
@@ -134,9 +134,9 @@ let commands = [
                     
                     composeView(env: env, content: { env in
                         Group {
-                            Toggle("Comments from People You Follow", isOn: .init(get: { env.commentNotification.following }, set: { env.commentNotification.following = $0 }))
+                            Toggle("Comments from People I Follow", isOn: .init(get: { env.commentNotification.following }, set: { env.commentNotification.following = $0 }))
                             
-                            Toggle("Comments from Your Followers", isOn: .init(get: { env.commentNotification.follower }, set: { env.commentNotification.follower = $0 }))
+                            Toggle("Comments from My Followers", isOn: .init(get: { env.commentNotification.follower }, set: { env.commentNotification.follower = $0 }))
                             
                             Toggle("Comments from Others", isOn: .init(get: { env.commentNotification.others }, set: { env.commentNotification.others = $0 }))
                         }.navigationBarTitle("Notifications")
@@ -169,10 +169,14 @@ let commands = [
                 ]
             },
             reset: { env in
-                env.phone = env.lastSavedPhone
+                env.likeNotification = (following: true, follower: true, others: true)
+                env.commentNotification = (following: true, follower: true, others: true)
+                env.liveVideoNotification = true
+                env.newFollowerNotification = true
+                env.directMessageNotification = true
             },
             resetDisabled: { env in
-                env.phone == env.lastSavedPhone
+                env.likeNotification == (following: true, follower: true, others: true) && env.commentNotification == (following: true, follower: true, others: true) && env.liveVideoNotification == true && env.newFollowerNotification == true && env.directMessageNotification == true
             }
     ),
     Command(name: "Auto Login",
