@@ -65,7 +65,7 @@ struct MatchedCommandLink: View {
                             Text(self.command.pathName())
                                 .lineLimit(1)
                                 .font(.footnote)
-                                .foregroundColor(Color(UIColor.systemGray2))
+                                .foregroundColor(Color(UIColor.systemGray))
                         }
                     }.padding(.vertical, 5)
                     

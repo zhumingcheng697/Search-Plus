@@ -99,6 +99,40 @@ let commands = [
             }
     ),
     
+    // MARK: - Edit Website
+    Command(name: "Edit Homepage",
+            directory: ["Profile"],
+            additionalKeywords: ["Change", "Modify", "URL", "Webpage", "Website"],
+            isSuggested: false,
+            destinationView: { env in
+                [
+                    composeView(env: env, content: { env in
+                        HStack {
+                            Text("Homepage")
+                            
+                            Divider()
+                            
+                            TextField("instagram.com/\(env.username)", text: .init(get: { env.homepage }, set: { env.homepage = $0 }))
+                                .textContentType(.URL)
+                                .autocapitalization(.none)
+                                .keyboardType(.URL)
+                            
+                        }.onAppear {
+                            env.lastSavedHomepage = env.homepage
+                        }.navigationBarTitle("Edit Homepage")
+                    }, footer: { env in
+                        "Your homepage is visible to everyone."
+                    })
+                ]
+            },
+            reset: { env in
+                env.homepage = env.lastSavedHomepage
+            },
+            resetDisabled: { env in
+                env.homepage == env.lastSavedHomepage
+            }
+    ),
+    
     // MARK: - Edit Bio
     Command(name: "Edit Bio",
             directory: ["Profile"],
@@ -107,6 +141,10 @@ let commands = [
                 [
                     composeView(env: env, content: { env in
                         TextEditor(text: .init(get: { env.bio }, set: { env.bio = $0 }))
+                            .listRowInsets(EdgeInsets())
+                            .padding(.horizontal)
+                            .background(Color(UIColor.systemBackground))
+                            .frame(minHeight: 100, maxHeight: .infinity)
                             .navigationBarTitle("Edit Bio")
                             .onAppear {
                                 env.lastSavedBio = env.bio

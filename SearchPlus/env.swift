@@ -8,10 +8,15 @@
 import SwiftUI
 
 class ENV: ObservableObject {
+    @Published var isSearchPlusOn = false
+    
     @Published var username = "mccoy_appleseed"
     @Published var lastSavedUsername = ""
     
-    @Published var bio = "Simplicity is the ultimate sophistication."
+    @Published var homepage = "github.com/zhumingcheng697"
+    @Published var lastSavedHomepage = ""
+    
+    @Published var bio = "逃げちゃ駄目だ。"
     @Published var lastSavedBio = ""
     
     @Published var likeNotification = (following: true, follower: true, others: false)
