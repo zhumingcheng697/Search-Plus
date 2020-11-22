@@ -9,8 +9,6 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var env: ENV
-    @State var searchText = ""
-    @State var isSearching = false
     
     init() {
         UIScrollView.appearance().keyboardDismissMode = .onDrag

@@ -49,28 +49,34 @@ struct HomeView: View {
                     .ignoresSafeArea(.all, edges: .horizontal)
                 
                 if !self.isSearching && self.searchText.isEmpty {
-                    Spacer()
-                    
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 150))]) {
-                        ForEach(commands) { command in
-                            if command.isSuggested {
-                                SuggestedCommandLink(searchText: self.$searchText, isSearching: self.$isSearching, command: command).environmentObject(env)
-                            }
+                    GeometryReader { geo in
+                        ScrollView {
+                            VStack(spacing: 0) {
+                                Spacer(minLength: 0)
+                                
+                                LazyVGrid(columns: [GridItem(.adaptive(minimum: 150))]) {
+                                    ForEach(commands) { command in
+                                        if command.isSuggested {
+                                            SuggestedCommandLink(searchText: self.$searchText, isSearching: self.$isSearching, command: command).environmentObject(env)
+                                        }
+                                    }
+                                }.padding()
+                                
+                                Spacer(minLength: 12)
+                                
+                                Group {
+                                    Text("Powered by Search Plus")
+                                        .font(.callout)
+                                        .padding(.bottom, 3)
+                                    
+                                    Text("© 2020 Mingcheng (McCoy) Zhu")
+                                        .font(.footnote)
+                                        .padding(.bottom)
+                                }.foregroundColor(Color(UIColor.systemGray))
+                                .padding(.horizontal)
+                            }.frame(maxWidth: .infinity, minHeight: geo.size.height)
                         }
-                    }.padding()
-                    
-                    Spacer()
-                    
-                    Group {
-                        Text("Powered by Search Plus")
-                            .font(.callout)
-                            .padding(.bottom, 3)
-                        
-                        Text("© 2020 Mingcheng (McCoy) Zhu")
-                            .font(.footnote)
-                            .padding(.bottom)
-                    }.foregroundColor(Color(UIColor.systemGray))
-                    .padding(.horizontal)
+                    }
                 } else {
                     Group {
                         if self.searchText.isEmpty {
@@ -122,5 +128,6 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+            .environmentObject(env)
     }
 }
