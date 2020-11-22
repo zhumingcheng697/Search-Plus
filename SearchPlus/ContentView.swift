@@ -53,6 +53,7 @@ struct ContentView: View {
                                     }, label: {
                                         Text("Done")
                                             .fontWeight(.bold)
+                                            .padding([.vertical, .leading])
                                     })
                                 }.padding([.top, .horizontal])
                             }
