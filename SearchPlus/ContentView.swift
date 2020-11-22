@@ -66,7 +66,29 @@ struct ContentView: View {
                             Spacer()
                         } else {
                             Group {
-                                if !self.searchText.isEmpty {
+                                if self.searchText.isEmpty {
+                                    VStack {
+                                        Spacer()
+                                        
+                                        Text("Please type in the command name.")
+                                            .foregroundColor(Color(UIColor.systemGray))
+                                            .multilineTextAlignment(.center)
+                                            .padding()
+                                        
+                                        Spacer()
+                                    }
+                                } else if commands.count(where: { $0.isMatch(of: self.searchText) }) == 0 {
+                                    VStack {
+                                        Spacer()
+                                        
+                                        Text("Sorry, no commands found.\nMaybe try something different?")
+                                            .foregroundColor(Color(UIColor.systemGray))
+                                            .multilineTextAlignment(.center)
+                                            .padding()
+                                        
+                                        Spacer()
+                                    }
+                                } else {
                                     ScrollView {
                                         LazyVStack(spacing: 0) {
                                             ForEach(commands) { command in
@@ -79,17 +101,6 @@ struct ContentView: View {
                                     .simultaneousGesture(TapGesture().onEnded{
                                         self.isSearching = false
                                     })
-                                } else {
-                                    VStack {
-                                        Spacer()
-                                        
-                                        Text("Please type in the command name")
-                                            .foregroundColor(Color(UIColor.systemGray))
-                                            .multilineTextAlignment(.center)
-                                            .padding()
-                                        
-                                        Spacer()
-                                    }
                                 }
                             }
                         }

@@ -21,13 +21,22 @@ struct SuggestedCommandLink: View {
             }.environmentObject(env)
         ) {
             ZStack {
-                Text(self.command.name)
-                    .multilineTextAlignment(.center)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                    .padding()
-                    .background(Color(UIColor.secondarySystemBackground))
-                    .cornerRadius(10)
+                VStack {
+                    Text(self.command.name)
+                        .multilineTextAlignment(.center)
+                    
+                    if !self.command.pathName().isEmpty {
+                        Text(self.command.pathName(level: 2))
+                            .lineLimit(1)
+                            .font(.footnote)
+                            .foregroundColor(Color(UIColor.systemGray))
+                    }
+                }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            .padding()
+            .background(Color(UIColor.secondarySystemBackground))
+            .cornerRadius(10)
         }.buttonStyle(PlainButtonStyle())
     }
 }
@@ -52,8 +61,8 @@ struct MatchedCommandLink: View {
                             .foregroundColor(Color(UIColor.label))
                             .padding(.bottom, 3)
                         
-                        if !self.command.pathName.isEmpty {
-                            Text(self.command.pathName)
+                        if !self.command.pathName().isEmpty {
+                            Text(self.command.pathName())
                                 .lineLimit(1)
                                 .font(.footnote)
                                 .foregroundColor(Color(UIColor.systemGray2))

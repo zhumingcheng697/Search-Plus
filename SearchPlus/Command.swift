@@ -9,7 +9,7 @@ import SwiftUI
 
 class Command: Identifiable {
     let name: String
-    let pathName: String
+    private let directory: [String]
     private var keywords: Set<String> = []
     var isSuggested: Bool
     private var destinationView: (ENV) -> [(AnyView, String, String)]
@@ -18,7 +18,7 @@ class Command: Identifiable {
     
     init(name: String, directory: [String] = [], keywords: Set<String> = [], additionalKeywords: Set<String> = [], isSuggested: Bool = true, destinationView: @escaping (ENV) -> [(AnyView, String, String)], reset: @escaping (ENV) -> (), resetDisabled: @escaping (ENV) -> Bool) {
         self.name = name
-        self.pathName = directory.joined(separator: " → ")
+        self.directory = directory
         self.isSuggested = isSuggested
         self.destinationView = destinationView
         self.reset = reset
@@ -43,6 +43,13 @@ class Command: Identifiable {
         }
     }
     
+    func pathName(level: Int? = nil) -> String {
+        if let level = level, level > 0 {
+            return self.directory.prefix(level).joined(separator: " → ")
+        }
+        return self.directory.joined(separator: " → ")
+    }
+    
     func isMatch(of searchTerms: String) -> Bool {
         return searchTerms.split(separator: " ").allSatisfy { word in
             return self.keywords.contains(where: {$0.lowercased().contains(word.lowercased())})
@@ -59,6 +66,7 @@ fileprivate func composeView<Content: View>(env: ENV, content: (ENV) -> Content,
 }
 
 let commands = [
+    // MARK: - Edit Username
     Command(name: "Edit Username",
             directory: ["Profile"],
             additionalKeywords: ["Change", "Modify"],
@@ -90,6 +98,8 @@ let commands = [
                 env.username == env.lastSavedUsername
             }
     ),
+    
+    // MARK: - Edit Bio
     Command(name: "Edit Bio",
             directory: ["Profile"],
             additionalKeywords: ["Change", "Modify", "Biography"],
@@ -113,6 +123,8 @@ let commands = [
                 env.bio == env.lastSavedBio
             }
     ),
+    
+    // MARK: - Notifications
     Command(name: "Notifications",
             directory: ["Settings"],
             additionalKeywords: ["Set", "Edit", "Modify", "Change", "Alerts", "Likes", "Comments", "Messages", "Direct", "Live", "Videos", "New", "Followers"],
@@ -129,7 +141,7 @@ let commands = [
                     }, header: { _ in
                         "Likes"
                     }, footer: { env in
-                        "Choose when to notify you when someone liked your post."
+                        "Choose when to notify you when someone liked your posts."
                     }),
                     
                     composeView(env: env, content: { env in
@@ -143,21 +155,21 @@ let commands = [
                     }, header: { _ in
                         "Comments"
                     }, footer: { _ in
-                        "Choose when to notify you when someone commented under your post."
+                        "Choose when to notify you when someone commented under your posts."
                     }),
                     
                     composeView(env: env, content: { env in
                         Toggle("Live Videos", isOn: .init(get: { env.liveVideoNotification }, set: { env.liveVideoNotification = $0 }))
                             .navigationBarTitle("Notifications")
                     }, footer: { _ in
-                        "Choose when to notify you when someone you follow started a live video."
+                        "Choose whether to notify you when someone you follow started a live video."
                     }),
                     
                     composeView(env: env, content: { env in
                         Toggle("New Followers", isOn: .init(get: { env.newFollowerNotification }, set: { env.newFollowerNotification = $0 }))
                             .navigationBarTitle("Notifications")
                     }, footer: { _ in
-                        "Choose whether to notify you when someone started following new."
+                        "Choose whether to notify you when someone started following you."
                     }),
                     
                     composeView(env: env, content: { env in
@@ -179,26 +191,133 @@ let commands = [
                 env.likeNotification == (following: true, follower: true, others: true) && env.commentNotification == (following: true, follower: true, others: true) && env.liveVideoNotification == true && env.newFollowerNotification == true && env.directMessageNotification == true
             }
     ),
-    Command(name: "Auto Login",
-            directory: ["Settings", "Security"],
-            additionalKeywords: ["Set", "Edit", "Modify", "Change", "Automatically", "Username", "Password", "Devices"],
+    
+    // MARK: - Likes Notification
+    Command(name: "Likes Notification",
+            directory: ["Settings", "Notifications"],
+            additionalKeywords: ["Set", "Edit", "Modify", "Change", "Alerts", "Likes", "New"],
+            isSuggested: false,
             destinationView: { env in
                 [
                     composeView(env: env, content: { env in
-                        Toggle("Log in Automatically", isOn: .init(get: { env.autoLogin }, set: { env.autoLogin = $0 }))
-                            .navigationBarTitle("Auto Login")
-                    }, footer: { _ in
-                        "Choose whether to save your username and password and login automatically on all your devices."
+                        Group {
+                            Toggle("Likes from People I Follow", isOn: .init(get: { env.likeNotification.following }, set: { env.likeNotification.following = $0 }))
+                            
+                            Toggle("Likes from My Followers", isOn: .init(get: { env.likeNotification.follower }, set: { env.likeNotification.follower = $0 }))
+                            
+                            Toggle("Likes from Others", isOn: .init(get: { env.likeNotification.others }, set: { env.likeNotification.others = $0 }))
+                        }.navigationBarTitle("Likes Notification")
+                    }, footer: { env in
+                        "Choose when to notify you when someone liked your posts."
                     })
                 ]
             },
             reset: { env in
-                env.autoLogin = false
+                env.likeNotification = (following: true, follower: true, others: true)
             },
             resetDisabled: { env in
-                env.autoLogin == false
+                env.likeNotification == (following: true, follower: true, others: true)
             }
     ),
+    
+    // MARK: - Comments Notification
+    Command(name: "Comments Notification",
+            directory: ["Settings", "Notifications"],
+            additionalKeywords: ["Set", "Edit", "Modify", "Change", "Alerts", "Comments", "New"],
+            isSuggested: false,
+            destinationView: { env in
+                [
+                    composeView(env: env, content: { env in
+                        Group {
+                            Toggle("Comments from People I Follow", isOn: .init(get: { env.commentNotification.following }, set: { env.commentNotification.following = $0 }))
+                            
+                            Toggle("Comments from My Followers", isOn: .init(get: { env.commentNotification.follower }, set: { env.commentNotification.follower = $0 }))
+                            
+                            Toggle("Comments from Others", isOn: .init(get: { env.commentNotification.others }, set: { env.commentNotification.others = $0 }))
+                        }.navigationBarTitle("Comments Notification")
+                    }, footer: { _ in
+                        "Choose when to notify you when someone commented under your posts."
+                    })
+                ]
+            },
+            reset: { env in
+                env.commentNotification = (following: true, follower: true, others: true)
+            },
+            resetDisabled: { env in
+                env.commentNotification == (following: true, follower: true, others: true)
+            }
+    ),
+    
+    // MARK: - Live Videos Notification
+    Command(name: "Live Videos Notification",
+            directory: ["Settings", "Notifications"],
+            additionalKeywords: ["Set", "Edit", "Modify", "Change", "Alerts", "Live", "Videos", "New"],
+            isSuggested: false,
+            destinationView: { env in
+                [
+                    composeView(env: env, content: { env in
+                        Toggle("Live Videos", isOn: .init(get: { env.liveVideoNotification }, set: { env.liveVideoNotification = $0 }))
+                            .navigationBarTitle("Live Videos Notification")
+                    }, footer: { _ in
+                        "Choose whether to notify you when someone you follow started a live video."
+                    })
+                ]
+            },
+            reset: { env in
+                env.liveVideoNotification = true
+            },
+            resetDisabled: { env in
+                env.liveVideoNotification == true
+            }
+    ),
+    
+    // MARK: - New Follower Notification
+    Command(name: "New Follower Notification",
+            directory: ["Settings", "Notifications"],
+            additionalKeywords: ["Set", "Edit", "Modify", "Change", "Alerts", "New", "Followers"],
+            isSuggested: false,
+            destinationView: { env in
+                [   
+                    composeView(env: env, content: { env in
+                        Toggle("New Followers", isOn: .init(get: { env.newFollowerNotification }, set: { env.newFollowerNotification = $0 }))
+                            .navigationBarTitle("New Follower Notification")
+                    }, footer: { _ in
+                        "Choose whether to notify you when someone started following you."
+                    })
+                ]
+            },
+            reset: { env in
+                env.newFollowerNotification = true
+            },
+            resetDisabled: { env in
+                env.newFollowerNotification == true
+            }
+    ),
+    
+    // MARK: - Message Notification
+    Command(name: "Message Notification",
+            directory: ["Settings", "Notifications"],
+            additionalKeywords: ["Set", "Edit", "Modify", "Change", "Alerts", "Messages", "Direct", "New"],
+            isSuggested: false,
+            destinationView: { env in
+                [   
+                    composeView(env: env, content: { env in
+                        Toggle("Direct Messages", isOn: .init(get: { env.directMessageNotification }, set: { env.directMessageNotification = $0 }))
+                            .navigationBarTitle("Message Notification")
+                    }, footer: { _ in
+                        "Choose whether to notify you when someone sent you a direct message."
+                    })
+                ]
+            },
+            reset: { env in
+                env.directMessageNotification = true
+            },
+            resetDisabled: { env in
+                env.directMessageNotification == true
+            }
+    ),
+    
+    // MARK: - Contacts Syncing
     Command(name: "Contacts Syncing",
             directory: ["Settings", "Account"],
             additionalKeywords: ["Set", "Edit", "Modify", "Change", "Automatically", "Friends"],
@@ -219,6 +338,8 @@ let commands = [
                 env.contactSyncing == false
             }
     ),
+    
+    // MARK: - Change Email
     Command(name: "Change Email",
             directory: ["Settings", "Account", "Personal Info"],
             additionalKeywords: ["Edit", "Modify", "Address"],
@@ -251,6 +372,8 @@ let commands = [
                 env.email == env.lastSavedEmail
             }
     ),
+    
+    // MARK: - Change Number
     Command(name: "Change Number",
             directory: ["Settings", "Account", "Personal Info"],
             additionalKeywords: ["Edit", "Modify", "Telephone"],
@@ -282,6 +405,30 @@ let commands = [
                 env.phone == env.lastSavedPhone
             }
     ),
+    
+    // MARK: - Auto Login
+    Command(name: "Auto Login",
+            directory: ["Settings", "Security"],
+            additionalKeywords: ["Set", "Edit", "Modify", "Change", "Automatically", "Username", "Password", "Devices"],
+            destinationView: { env in
+                [
+                    composeView(env: env, content: { env in
+                        Toggle("Log in Automatically", isOn: .init(get: { env.autoLogin }, set: { env.autoLogin = $0 }))
+                            .navigationBarTitle("Auto Login")
+                    }, footer: { _ in
+                        "Choose whether to save your username and password and login automatically on all your devices."
+                    })
+                ]
+            },
+            reset: { env in
+                env.autoLogin = false
+            },
+            resetDisabled: { env in
+                env.autoLogin == false
+            }
+    ),
+    
+    // MARK: - Account Privacy
     Command(name: "Account Privacy",
             directory: ["Settings", "Privacy"],
             additionalKeywords: ["Set", "Edit", "Modify", "Change", "Private", "Allowed", "Visible", "Visibility"],
@@ -303,6 +450,8 @@ let commands = [
                 env.isAccountPrivate == false
             }
     ),
+    
+    // MARK: - Interaction Privacy
     Command(name: "Interaction Privacy",
             directory: ["Settings", "Privacy"],
             additionalKeywords: ["Set", "Edit", "Modify", "Change", "Private", "Allowed", "Comments", "Posts", "Mentions", "Messages"],
@@ -348,7 +497,7 @@ let commands = [
                     }, header: { _ in
                         "Allow Direct Messages From"
                     }, footer: { _ in
-                        "Choose who send you direct messages."
+                        "Choose who can send you direct messages."
                     })
                 ]
             },
@@ -361,6 +510,8 @@ let commands = [
                 env.allowComments == .everyOne && env.allowMentions == PrivacyOptions.everyOne && env.allowMessages == PrivacyOptions.followingOnly
             }
     ),
+    
+    // MARK: - Comment Privacy
     Command(name: "Comment Privacy",
             directory: ["Settings", "Privacy", "Interactions"],
             additionalKeywords: ["Set", "Edit", "Modify", "Change", "Private", "Allowed", "Comments", "Posts"],
@@ -388,6 +539,8 @@ let commands = [
                 env.allowComments == PrivacyOptions.everyOne
             }
     ),
+    
+    // MARK: - Mentions Privacy
     Command(name: "Mentions Privacy",
             directory: ["Settings", "Privacy", "Interactions"],
             additionalKeywords: ["Set", "Edit", "Modify", "Change", "Private", "Allowed", "Posts"],
@@ -416,6 +569,8 @@ let commands = [
                 env.allowMentions == PrivacyOptions.everyOne
             }
     ),
+    
+    // MARK: - Message Privacy
     Command(name: "Message Privacy",
             directory: ["Settings", "Privacy", "Interactions"],
             additionalKeywords: ["Set", "Edit", "Modify", "Change", "Private", "Allowed", "Messages", "Direct"],
@@ -433,7 +588,7 @@ let commands = [
                     }, header: { _ in
                         "Allow Direct Messages From"
                     }, footer: { _ in
-                        "Choose who send you direct messages."
+                        "Choose who can send you direct messages."
                     })
                 ]
             },
