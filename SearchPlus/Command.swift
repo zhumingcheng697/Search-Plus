@@ -10,7 +10,7 @@ import SwiftUI
 class Command: Identifiable {
     let name: String
     let pathName: String
-    var keywords: Set<String> = []
+    private var keywords: Set<String> = []
     var isSuggested: Bool
     private var destinationView: (ENV) -> [(AnyView, String, String)]
     private var reset: (ENV) -> ()
@@ -50,7 +50,7 @@ class Command: Identifiable {
     }
     
     func destinationView(onDismiss: @escaping () -> ()) -> some View {
-        return CommandDestinationViewWrapper(destination: self.destinationView, reset: self.reset, resetDisabled: self.resetDisabled, onDismiss: onDismiss)
+        return CommandDestinationViewWrapper(destination: self.destinationView, reset: self.reset, resetDisabled: self.resetDisabled, onDismiss: onDismiss).navigationBarTitleDisplayMode(.inline)
     }
 }
 
@@ -113,9 +113,71 @@ let commands = [
                 env.bio == env.lastSavedBio
             }
     ),
+    Command(name: "Notifications",
+            directory: ["Settings"],
+            additionalKeywords: ["Set", "Edit", "Modify", "Change", "Alerts", "Likes", "Comments", "Messages", "Direct", "Live", "Videos", "New", "Followers"],
+            destinationView: { env in
+                [
+                    composeView(env: env, content: { env in
+                        Group {
+                            Toggle("Likes from People You Follow", isOn: .init(get: { env.likeNotification.following }, set: { env.likeNotification.following = $0 }))
+                            
+                            Toggle("Likes from Your Followers", isOn: .init(get: { env.likeNotification.follower }, set: { env.likeNotification.follower = $0 }))
+                            
+                            Toggle("Likes from Others", isOn: .init(get: { env.likeNotification.others }, set: { env.likeNotification.others = $0 }))
+                        }.navigationBarTitle("Notifications")
+                    }, header: { _ in
+                        "Likes"
+                    }, footer: { env in
+                        "Choose when to notify you when someone liked your post."
+                    }),
+                    
+                    composeView(env: env, content: { env in
+                        Group {
+                            Toggle("Comments from People You Follow", isOn: .init(get: { env.commentNotification.following }, set: { env.commentNotification.following = $0 }))
+                            
+                            Toggle("Comments from Your Followers", isOn: .init(get: { env.commentNotification.follower }, set: { env.commentNotification.follower = $0 }))
+                            
+                            Toggle("Comments from Others", isOn: .init(get: { env.commentNotification.others }, set: { env.commentNotification.others = $0 }))
+                        }.navigationBarTitle("Notifications")
+                    }, header: { _ in
+                        "Comments"
+                    }, footer: { _ in
+                        "Choose when to notify you when someone commented under your post."
+                    }),
+                    
+                    composeView(env: env, content: { env in
+                        Toggle("Live Videos", isOn: .init(get: { env.liveVideoNotification }, set: { env.liveVideoNotification = $0 }))
+                            .navigationBarTitle("Notifications")
+                    }, footer: { _ in
+                        "Choose when to notify you when someone you follow started a live video."
+                    }),
+                    
+                    composeView(env: env, content: { env in
+                        Toggle("New Followers", isOn: .init(get: { env.newFollowerNotification }, set: { env.newFollowerNotification = $0 }))
+                            .navigationBarTitle("Notifications")
+                    }, footer: { _ in
+                        "Choose whether to notify you when someone started following new."
+                    }),
+                    
+                    composeView(env: env, content: { env in
+                        Toggle("Direct Messages", isOn: .init(get: { env.directMessageNotification }, set: { env.directMessageNotification = $0 }))
+                            .navigationBarTitle("Notifications")
+                    }, footer: { _ in
+                        "Choose whether to notify you when someone sent you a direct message."
+                    })
+                ]
+            },
+            reset: { env in
+                env.phone = env.lastSavedPhone
+            },
+            resetDisabled: { env in
+                env.phone == env.lastSavedPhone
+            }
+    ),
     Command(name: "Auto Login",
             directory: ["Settings", "Security"],
-            additionalKeywords: ["Edit", "Modify", "Change", "Automatically", "Username", "Password", "Devices"],
+            additionalKeywords: ["Set", "Edit", "Modify", "Change", "Automatically", "Username", "Password", "Devices"],
             destinationView: { env in
                 [
                     composeView(env: env, content: { env in
@@ -135,7 +197,7 @@ let commands = [
     ),
     Command(name: "Contacts Syncing",
             directory: ["Settings", "Account"],
-            additionalKeywords: ["Edit", "Modify", "Change", "Automatically", "Friends"],
+            additionalKeywords: ["Set", "Edit", "Modify", "Change", "Automatically", "Friends"],
             destinationView: { env in
                 [
                     composeView(env: env, content: { env in
@@ -155,7 +217,7 @@ let commands = [
     ),
     Command(name: "Change Email",
             directory: ["Settings", "Account", "Personal Info"],
-            additionalKeywords: ["Edit", "Modify"],
+            additionalKeywords: ["Edit", "Modify", "Address"],
             isSuggested: false,
             destinationView: { env in
                 [
@@ -187,7 +249,7 @@ let commands = [
     ),
     Command(name: "Change Number",
             directory: ["Settings", "Account", "Personal Info"],
-            additionalKeywords: ["Edit", "Modify"],
+            additionalKeywords: ["Edit", "Modify", "Telephone"],
             destinationView: { env in
                 [
                     composeView(env: env, content: { env in
@@ -218,7 +280,7 @@ let commands = [
     ),
     Command(name: "Account Privacy",
             directory: ["Settings", "Privacy"],
-            additionalKeywords: ["Edit", "Modify", "Change", "Private", "Allow", "Visible", "Visibility"],
+            additionalKeywords: ["Set", "Edit", "Modify", "Change", "Private", "Allowed", "Visible", "Visibility"],
             isSuggested: false,
             destinationView: { env in
                 [
@@ -239,7 +301,7 @@ let commands = [
     ),
     Command(name: "Interaction Privacy",
             directory: ["Settings", "Privacy"],
-            additionalKeywords: ["Edit", "Modify", "Change", "Private", "Allow", "Visible", "Visibility", "Comments", "Posts", "Mentions", "Messages"],
+            additionalKeywords: ["Set", "Edit", "Modify", "Change", "Private", "Allowed", "Comments", "Posts", "Mentions", "Messages"],
             isSuggested: false,
             destinationView: { env in
                 [
@@ -297,7 +359,7 @@ let commands = [
     ),
     Command(name: "Comment Privacy",
             directory: ["Settings", "Privacy", "Interactions"],
-            additionalKeywords: ["Edit", "Modify", "Change", "Private", "Allow", "Comments", "Posts"],
+            additionalKeywords: ["Set", "Edit", "Modify", "Change", "Private", "Allowed", "Comments", "Posts"],
             destinationView: { env in
                 [
                     composeView(env: env, content: { env in
@@ -324,7 +386,7 @@ let commands = [
     ),
     Command(name: "Mentions Privacy",
             directory: ["Settings", "Privacy", "Interactions"],
-            additionalKeywords: ["Edit", "Modify", "Change", "Private", "Allow", "Posts"],
+            additionalKeywords: ["Set", "Edit", "Modify", "Change", "Private", "Allowed", "Posts"],
             isSuggested: false,
             destinationView: { env in
                 [
@@ -352,7 +414,8 @@ let commands = [
     ),
     Command(name: "Message Privacy",
             directory: ["Settings", "Privacy", "Interactions"],
-            additionalKeywords: ["Edit", "Modify", "Change", "Private", "Allow", "Messages", "Direct"],
+            additionalKeywords: ["Set", "Edit", "Modify", "Change", "Private", "Allowed", "Messages", "Direct"],
+            isSuggested: false,
             destinationView: { env in
                 [
                     composeView(env: env, content: { env in

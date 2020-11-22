@@ -55,7 +55,7 @@ struct ContentView: View {
                         if !self.isSearching && self.searchText.isEmpty {
                             Spacer()
                             
-                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 108))]) {
+                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 110))]) {
                                 ForEach(commands) { command in
                                     if command.isSuggested {
                                         SuggestedCommandLink(searchText: self.$searchText, isSearching: self.$isSearching, command: command).environmentObject(env)

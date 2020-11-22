@@ -14,6 +14,13 @@ class ENV: ObservableObject {
     @Published var bio = "Simplicity is the ultimate sophistication."
     @Published var lastSavedBio = ""
     
+    @Published var likeNotification = (following: true, follower: true, others: true)
+    @Published var commentNotification = (following: true, follower: true, others: true)
+    
+    @Published var liveVideoNotification = true
+    @Published var newFollowerNotification = true
+    @Published var directMessageNotification = true
+    
     @Published var email = "mccoy.zhu@nyu.edu"
     @Published var lastSavedEmail = ""
     

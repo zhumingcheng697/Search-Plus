@@ -18,7 +18,7 @@ struct CommandDestinationViewWrapper: View {
     var body: some View {
         List {
             ForEach(0..<self.destination(self.env).count) { index in
-                Section(header: Text(self.destination(self.env)[index].header).padding(self.destination(self.env)[index].header.isEmpty ? [] : [.top]), footer: Text(self.destination(self.env)[index].footer).padding(self.destination(self.env)[index].footer.isEmpty ? [] : [.bottom])) {
+                Section(header: Text(self.destination(self.env)[index].header).padding(self.destination(self.env)[index].header.isEmpty ? [] : [.top]), footer: Text(self.destination(self.env)[index].footer).padding(self.destination(self.env)[index].footer.isEmpty || (self.destination(self.env)[index].header.isEmpty && index != self.destination(self.env).count - 1) ? [] : [.bottom])) {
                     self.destination(self.env)[index].content
                 }
             }
@@ -35,7 +35,6 @@ struct CommandDestinationViewWrapper: View {
             .opacity(self.resetDisabled(self.env) ? 0.5 : 1)
             
             .navigationBarHidden(false)
-            .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(trailing: Button(action: {
                 self.onDismiss()
                 self.presentation.wrappedValue.dismiss()
