@@ -48,6 +48,7 @@ struct CommandDestinationViewWrapper: View {
                     .padding([.vertical, .leading])
             }))
         }.listStyle(GroupedListStyle())
+        .environment(\.horizontalSizeClass, UIDevice.current.userInterfaceIdiom == .pad ? .regular : .compact)
     }
 }
 
