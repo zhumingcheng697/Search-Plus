@@ -10,6 +10,7 @@ import SwiftUI
 struct CommandDestinationViewWrapper: View {
     @EnvironmentObject var env: ENV
     @Environment(\.presentationMode) var presentation
+    @State var isAlertPresented = false
     let destination: (ENV) -> [(content: AnyView, header: String, footer: String)]
     var reset: (ENV) -> () = {_ in}
     var resetDisabled: (ENV) -> Bool = {_ in true}
@@ -24,7 +25,7 @@ struct CommandDestinationViewWrapper: View {
             }
             
             Button(action: {
-                self.reset(self.env)
+                self.isAlertPresented = true
             }, label: {
                 HStack {
                     Text("Reset")
@@ -33,6 +34,9 @@ struct CommandDestinationViewWrapper: View {
             })
             .disabled(self.resetDisabled(self.env))
             .opacity(self.resetDisabled(self.env) ? 0.5 : 1)
+            .alert(isPresented: self.$isAlertPresented) {
+                Alert(title: Text("Are sure you want to reset?"), primaryButton: .destructive(Text("Reset"), action: { self.reset(self.env) }), secondaryButton: .cancel())
+            }
             
             .navigationBarHidden(false)
             .navigationBarItems(trailing: Button(action: {
