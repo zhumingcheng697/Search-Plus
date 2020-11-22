@@ -16,10 +16,18 @@ struct CommandDestinationViewWrapper: View {
     var resetDisabled: (ENV) -> Bool = {_ in true}
     var onDismiss: () -> () = {}
     
-    var body: some View {
-        List {
+    func shouldHaveTopPadding(index: Int) -> Bool {
+        return !self.destination(self.env)[index].header.isEmpty
+    }
+    
+    func shouldHaveBottomPadding(index: Int) -> Bool {
+        return !self.destination(self.env)[index].footer.isEmpty && (!self.destination(self.env)[index].header.isEmpty || index == self.destination(self.env).count - 1)
+    }
+    
+    var content: some View {
+        Group {
             ForEach(0..<self.destination(self.env).count) { index in
-                Section(header: Text(self.destination(self.env)[index].header).padding(self.destination(self.env)[index].header.isEmpty ? [] : [.top]), footer: Text(self.destination(self.env)[index].footer).padding(self.destination(self.env)[index].footer.isEmpty || (self.destination(self.env)[index].header.isEmpty && index != self.destination(self.env).count - 1) ? [] : [.bottom])) {
+                Section(header: Text(self.destination(self.env)[index].header).padding(shouldHaveTopPadding(index: index) ? [.top] : []).padding(UIDevice.current.userInterfaceIdiom == .pad ? [.leading] : []), footer: Text(self.destination(self.env)[index].footer).padding(shouldHaveBottomPadding(index: index) ? [.bottom] : []).padding(UIDevice.current.userInterfaceIdiom == .pad ? [.leading] : [])) {
                     self.destination(self.env)[index].content
                 }
             }
@@ -47,8 +55,20 @@ struct CommandDestinationViewWrapper: View {
                     .fontWeight(.bold)
                     .padding([.vertical, .leading])
             }))
-        }.listStyle(GroupedListStyle())
-        .environment(\.horizontalSizeClass, UIDevice.current.userInterfaceIdiom == .pad ? .regular : .compact)
+        }
+    }
+    
+    var body: some View {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            Form {
+                self.content
+            }
+        } else {
+            List {
+                self.content
+            }.listStyle(GroupedListStyle())
+        }
+        
     }
 }
 

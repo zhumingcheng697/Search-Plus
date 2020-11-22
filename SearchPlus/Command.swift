@@ -454,7 +454,7 @@ let commands = [
                         Toggle("Log in Automatically", isOn: .init(get: { env.autoLogin }, set: { env.autoLogin = $0 }))
                             .navigationBarTitle("Auto Login")
                     }, footer: { _ in
-                        "Choose whether to save your username and password and login automatically on all your devices."
+                        "Choose whether to save your username and password and log in automatically on all your devices."
                     })
                 ]
             },
