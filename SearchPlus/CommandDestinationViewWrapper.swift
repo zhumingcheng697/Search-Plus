@@ -43,7 +43,7 @@ struct CommandDestinationViewWrapper: View {
             .disabled(self.resetDisabled(self.env))
             .opacity(self.resetDisabled(self.env) ? 0.5 : 1)
             .alert(isPresented: self.$isAlertPresented) {
-                Alert(title: Text("Are sure you want to reset?"), primaryButton: .destructive(Text("Reset"), action: { self.reset(self.env) }), secondaryButton: .cancel())
+                Alert(title: Text("Are sure you want to reset?"), message: Text("This action cannot be reverted."), primaryButton: .destructive(Text("Reset"), action: { self.reset(self.env) }), secondaryButton: .cancel())
             }
             
             .navigationBarHidden(false)

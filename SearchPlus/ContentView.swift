@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var env: ENV
+    @State var notifySearchPlus = false
+    @State var highlightSearchPlus = false
     
     init() {
         UIScrollView.appearance().keyboardDismissMode = .onDrag
@@ -24,12 +26,14 @@ struct ContentView: View {
                 .ignoresSafeArea(.all, edges: .all)
                 .overlay(
                     ZStack {
-                        Rectangle()
-                            .fill(Color(UIColor.systemBackground))
-                            .frame(width: 53, height: 50)
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color(self.highlightSearchPlus ? UIColor.secondarySystemBackground : UIColor.systemBackground))
+                            .animation(.default, value: self.highlightSearchPlus)
+                            .frame(width: 50, height: 50)
                         
                         Button(action: {
                             self.env.isSearchPlusOn = true
+                            self.highlightSearchPlus = false
                         }, label: {
                             SearchPlusIcon(scale: 1.05, foregroundColor: Color(UIColor.label))
                                 .padding()
@@ -37,6 +41,19 @@ struct ContentView: View {
                     }.padding(.trailing, 50)
                     .padding(.vertical, 2),
                     alignment: .topTrailing
+                ).overlay(
+                    Button(action: {
+                        self.notifySearchPlus = true
+                        self.highlightSearchPlus = true
+                    }, label: {
+                        Rectangle()
+                            .fill(Color.clear)
+                            .frame(height: 378)
+                            .alert(isPresented: self.$notifySearchPlus) {
+                                Alert(title: Text("This app supports Search Plus"), message: Text("Tap on the highlighted icon on top of the screen to enjoy a much easier experience powered by Search Plus."), dismissButton: nil)
+                            }
+                    }),
+                    alignment: .bottom
                 ).sheet(isPresented: self.$env.isSearchPlusOn) {
                     HomeView().environmentObject(self.env)
                 }
