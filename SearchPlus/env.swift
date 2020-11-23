@@ -8,8 +8,6 @@
 import SwiftUI
 
 class ENV: ObservableObject {
-    @Published var isSearchPlusOn = false
-    
     @Published var username = "mccoy_appleseed"
     @Published var lastSavedUsername = ""
     

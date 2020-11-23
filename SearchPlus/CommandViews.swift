@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SuggestedCommandLink: View {
     @EnvironmentObject var env: ENV
+    @Binding var isSearchPlusActivated: Bool
     @Binding var searchText: String
     @Binding var isSearching: Bool
     let command: Command
@@ -16,6 +17,7 @@ struct SuggestedCommandLink: View {
     var body: some View {
         NavigationLink(destination: 
             self.command.destinationView {
+                self.isSearchPlusActivated = false
                 self.isSearching = false
                 self.searchText = ""
             }.environmentObject(env)
@@ -43,6 +45,7 @@ struct SuggestedCommandLink: View {
 
 struct MatchedCommandLink: View {
     @EnvironmentObject var env: ENV
+    @Binding var isSearchPlusActivated: Bool
     @Binding var searchText: String
     @Binding var isSearching: Bool
     let command: Command
@@ -51,6 +54,7 @@ struct MatchedCommandLink: View {
         VStack(spacing: 0) {
             NavigationLink(destination: 
                 self.command.destinationView {
+                    self.isSearchPlusActivated = false
                     self.isSearching = false
                     self.searchText = ""
                 }.environmentObject(env)

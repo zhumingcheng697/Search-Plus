@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var env: ENV
+    @Binding var isSearchPlusActivated: Bool
     @State var searchText = ""
     @State var isSearching = false
     
@@ -25,7 +26,7 @@ struct HomeView: View {
                             Spacer()
                             
                             Button(action: {
-                                self.env.isSearchPlusOn = false
+                                self.isSearchPlusActivated = false
                             }, label: {
                                 Text("Done")
                                     .fontWeight(.bold)
@@ -57,7 +58,7 @@ struct HomeView: View {
                                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 150))]) {
                                     ForEach(commands) { command in
                                         if command.isSuggested {
-                                            SuggestedCommandLink(searchText: self.$searchText, isSearching: self.$isSearching, command: command).environmentObject(env)
+                                            SuggestedCommandLink(isSearchPlusActivated: self.$isSearchPlusActivated, searchText: self.$searchText, isSearching: self.$isSearching, command: command).environmentObject(env)
                                         }
                                     }
                                 }.padding()
@@ -106,7 +107,7 @@ struct HomeView: View {
                                 LazyVStack(spacing: 0) {
                                     ForEach(commands) { command in
                                         if command.isMatch(of: self.searchText) {
-                                            MatchedCommandLink(searchText: self.$searchText, isSearching: self.$isSearching, command: command).environmentObject(env)
+                                            MatchedCommandLink(isSearchPlusActivated: self.$isSearchPlusActivated, searchText: self.$searchText, isSearching: self.$isSearching, command: command).environmentObject(env)
                                         }
                                     }
                                 }
@@ -128,7 +129,7 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        HomeView(isSearchPlusActivated: .constant(true))
             .environmentObject(env)
     }
 }

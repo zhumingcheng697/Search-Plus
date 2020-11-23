@@ -11,6 +11,7 @@ struct ContentView: View {
     @EnvironmentObject var env: ENV
     @State var notifySearchPlus = false
     @State var highlightSearchPlus = false
+    @State var isSearchPlusActivated = false
     
     init() {
         UIScrollView.appearance().keyboardDismissMode = .onDrag
@@ -19,7 +20,7 @@ struct ContentView: View {
     
     var body: some View {
         if UIDevice.current.userInterfaceIdiom != .phone || UIScreen.main.bounds.height != 812 {
-            HomeView().environmentObject(self.env)
+            HomeView(isSearchPlusActivated: self.$isSearchPlusActivated).environmentObject(self.env)
         } else {
             Image("ins")
                 .resizable()
@@ -32,7 +33,7 @@ struct ContentView: View {
                             .frame(width: 50, height: 50)
                         
                         Button(action: {
-                            self.env.isSearchPlusOn = true
+                            self.isSearchPlusActivated = true
                             self.highlightSearchPlus = false
                         }, label: {
                             SearchPlusIcon(scale: 1.05, foregroundColor: Color(UIColor.label))
@@ -54,8 +55,8 @@ struct ContentView: View {
                             }
                     }),
                     alignment: .bottom
-                ).sheet(isPresented: self.$env.isSearchPlusOn) {
-                    HomeView().environmentObject(self.env)
+                ).sheet(isPresented: self.$isSearchPlusActivated) {
+                    HomeView(isSearchPlusActivated: self.$isSearchPlusActivated).environmentObject(self.env)
                 }
         }
     }
