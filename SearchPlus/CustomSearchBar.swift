@@ -37,8 +37,9 @@ struct CustomSearchBar: UIViewRepresentable {
         }
         
         func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-            self.searchText.wrappedValue = ""
             searchBar.resignFirstResponder()
+            self.isSearching.wrappedValue = false
+            self.searchText.wrappedValue = ""
         }
     }
 
@@ -64,7 +65,7 @@ struct CustomSearchBar: UIViewRepresentable {
     func updateUIView(_ uiView: UISearchBar, context: UIViewRepresentableContext<CustomSearchBar>) {
         uiView.delegate = context.coordinator
         
-        if !self.isSearching || self.searchText.isEmpty {
+        if !self.isSearching && uiView.text != self.searchText {
             uiView.text = self.searchText
         }
         

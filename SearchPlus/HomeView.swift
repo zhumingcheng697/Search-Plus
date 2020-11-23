@@ -120,7 +120,8 @@ struct HomeView: View {
             }
             .navigationBarHidden(true)
         }.navigationViewStyle(StackNavigationViewStyle())
-        .animation(.easeInOut(duration: 0.3), value: self.isSearching || !self.searchText.isEmpty)
+        .animation(.easeInOut(duration: 0.3), value: self.isSearching)
+        .animation(.easeInOut(duration: 0.3), value: self.searchText)
         .disableSheetDismissGesture()
     }
 }
