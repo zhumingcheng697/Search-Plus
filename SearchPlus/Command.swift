@@ -52,7 +52,7 @@ class Command: Identifiable {
     
     func isMatch(of searchTerms: String) -> Bool {
         return searchTerms.split(separator: " ").allSatisfy { word in
-            return self.keywords.contains(where: {$0.lowercased().contains(word.lowercased())})
+            return self.keywords.contains(where: {$0.lowercased().starts(with: word.lowercased())})
         }
     }
     

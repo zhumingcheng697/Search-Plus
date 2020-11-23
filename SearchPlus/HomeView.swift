@@ -90,7 +90,7 @@ struct HomeView: View {
                                 
                                 Spacer()
                             }
-                        } else if commands.count(where: { $0.isMatch(of: self.searchText) }) == 0 {
+                        } else if !commands.contains(where: { $0.isMatch(of: self.searchText) }) {
                             VStack {
                                 Spacer()
                                 
