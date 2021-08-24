@@ -16,18 +16,16 @@ struct CommandDestinationViewWrapper: View {
     var resetDisabled: (ENV) -> Bool = {_ in true}
     var onDismiss: () -> () = {}
     
-    func shouldHaveTopPadding(index: Int) -> Bool {
-        return !self.destination(self.env)[index].header.isEmpty
-    }
-    
     func shouldHaveBottomPadding(index: Int) -> Bool {
-        return !self.destination(self.env)[index].footer.isEmpty && (!self.destination(self.env)[index].header.isEmpty || index == self.destination(self.env).count - 1)
+        return !self.destination(self.env)[index].footer.isEmpty && (index == self.destination(self.env).count - 1 || !self.destination(self.env)[index + 1].header.isEmpty)
     }
     
     var content: some View {
         Group {
             ForEach(0..<self.destination(self.env).count) { index in
-                Section(header: Text(self.destination(self.env)[index].header).padding(shouldHaveTopPadding(index: index) ? [.top] : []).padding(UIDevice.current.userInterfaceIdiom == .pad ? [.leading] : []), footer: Text(self.destination(self.env)[index].footer).padding(shouldHaveBottomPadding(index: index) ? [.bottom] : []).padding(UIDevice.current.userInterfaceIdiom == .pad ? [.leading] : [])) {
+                Section(header: Text(self.destination(self.env)[index].header),
+                        footer: Text(self.destination(self.env)[index].footer)
+                            .padding(shouldHaveBottomPadding(index: index) ? [.bottom] : [])) {
                     self.destination(self.env)[index].content
                 }
             }
